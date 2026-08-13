@@ -5,6 +5,7 @@ import {
   BsStarFill, BsBookmark, BsArrowRight, BsPeopleFill,
   BsShop, BsEggFried
 } from "react-icons/bs";
+import placesData from "../data/placesData";
 
 const popularSearches = ["Kathmandu", "Pokhara", "Momo", "Thakali", "Chowmein"];
 
@@ -16,32 +17,13 @@ const features = [
   { icon: BsBookmark, title: "Save Favorites", desc: "Save your favorite dishes and restaurants.", bg: "bg-purple-500" },
 ];
 
-const popularPlaces = [
-  {
-    name: "Kathmandu",
-    image: "/placeimage/KTM.jpg",
-    desc: "Momo, Newari cuisine & boutique cafés",
-    tags: ["Momo", "Newari", "Thakali"],
-  },
-  {
-    name: "Pokhara",
-    image: "/placeimage/Pokhara.jpg",
-    desc: "Lakeside cafés, Thakali sets & fresh trout",
-    tags: ["Thakali", "Trout", "Café"],
-  },
-  {
-    name: "Chitwan",
-    image: "/placeimage/Chitwan.jpg",
-    desc: "Tharu cuisine & jungle-side eateries",
-    tags: ["Tharu", "Local", "Snacks"],
-  },
-  {
-    name: "Butwal",
-    image: "/placeimage/Butwal.jpg",
-    desc: "Popular local snacks & budget diners",
-    tags: ["Snacks", "Momo", "Local"],
-  },
-];
+const popularPlaces = placesData.map((p) => ({
+  name: p.name,
+  slug: p.slug,
+  image: p.image,
+  desc: p.tagline,
+  tags: p.tags,
+}));
 
 const steps = [
   { step: "01", icon: BsGeoAlt, title: "Detect Location", desc: "Allow location access to discover nearby food.", color: "text-orange-500", bg: "bg-orange-100 dark:bg-orange-900/30" },
@@ -178,7 +160,8 @@ const Homepage = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {popularPlaces.map((place) => (
-              <div
+              <Link
+                to={`/places/${place.slug}`}
                 key={place.name}
                 className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition border border-slate-100 dark:border-slate-700"
               >
@@ -200,7 +183,7 @@ const Homepage = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

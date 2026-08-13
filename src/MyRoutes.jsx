@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PageNotFound from "./pages/PageNotFound";
+import PlaceDetail from "./pages/PlaceDetail";
 
 const MyRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const MyRoutes = () => {
         <Route index element={<Homepage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/places/:slug" element={<PlaceDetail />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
