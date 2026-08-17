@@ -1,11 +1,42 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { MythemesContext } from "../../hooks/MyThemesContext";
-import { BsList, BsX } from "react-icons/bs";
+import { MyContext } from "../../hooks/MyContext";
+import {
+  BsList,
+  BsX,
+  BsPersonCircle,
+  BsMoonStars,
+  BsSunFill,
+  BsGear,
+  BsBoxArrowRight,
+} from "react-icons/bs";
 
 const Header = () => {
   const { themes, toggleTheme } = useContext(MythemesContext);
+  const { user, logout } = useContext(MyContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    setProfileOpen(false);
+    navigate("/");
+  };
+
+  // Close the profile dropdown when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="bg-white dark:bg-slate-900 shadow-md sticky top-0 z-50 transition-colors">
@@ -30,32 +61,91 @@ const Header = () => {
           <Link to="/" className="text-orange-500 border-b-2 border-orange-500 pb-1">Home</Link>
           <Link to="/services" className="hover:text-orange-500 transition">Restaurants</Link>
           <Link to="/foods" className="hover:text-orange-500 transition">Foods</Link>
+          <Link to="/places" className="hover:text-orange-500 transition">Places</Link>
           <Link to="/about" className="hover:text-orange-500 transition">About Us</Link>
           <Link to="/contact" className="hover:text-orange-500 transition">Contact</Link>
         </nav>
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            className="text-xl px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition"
-          >
-            {themes === "light" ? "🌙" : "☀️"}
-          </button>
+          {user ? (
+            <div className="relative" ref={profileRef}>
+              {/* Profile icon button */}
+              <button
+                onClick={() => setProfileOpen((prev) => !prev)}
+                aria-label="Account menu"
+                aria-expanded={profileOpen}
+                className="w-11 h-11 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-sm flex items-center justify-center hover:shadow-md hover:border-orange-400 transition overflow-hidden"
+              >
+                <BsPersonCircle className="text-3xl text-slate-800 dark:text-slate-100" />
+              </button>
 
-          <Link
-            to="/login"
-            className="hidden md:inline-flex items-center border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition"
-          >
-            Login
-          </Link>
+              {/* Dropdown */}
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg py-2 z-50">
+                  <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
+                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100 truncate">
+                      {user.name || user.username}
+                    </p>
+                  </div>
 
-          <Link
-            to="/signup"
-            className="hidden md:inline-flex items-center bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition"
-          >
-            Sign Up
-          </Link>
+                  <button
+                    onClick={() => {
+                      toggleTheme();
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition"
+                  >
+                    {themes === "light" ? (
+                      <BsMoonStars className="text-lg text-orange-500" />
+                    ) : (
+                      <BsSunFill className="text-lg text-orange-500" />
+                    )}
+                    <span>Theme: {themes === "light" ? "Light" : "Dark"}</span>
+                  </button>
+
+                  <Link
+                    to="/settings"
+                    onClick={() => setProfileOpen(false)}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition"
+                  >
+                    <BsGear className="text-lg text-orange-500" />
+                    <span>Settings</span>
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 transition"
+                  >
+                    <BsBoxArrowRight className="text-lg" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={toggleTheme}
+                className="text-xl px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition"
+              >
+                {themes === "light" ? "🌙" : "☀️"}
+              </button>
+
+              <Link
+                to="/login"
+                className="hidden md:inline-flex items-center border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/signup"
+                className="hidden md:inline-flex items-center bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
 
           {/* Mobile menu toggle */}
           <button
@@ -73,12 +163,15 @@ const Header = () => {
           <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-orange-500">Home</Link>
           <Link to="/services" onClick={() => setMenuOpen(false)} className="hover:text-orange-500">Restaurants</Link>
           <Link to="/foods" onClick={() => setMenuOpen(false)} className="hover:text-orange-500">Foods</Link>
+          <Link to="/places" onClick={() => setMenuOpen(false)} className="hover:text-orange-500">Places</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-orange-500">About Us</Link>
           <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-orange-500">Contact</Link>
-          <div className="flex gap-3 pt-2">
-            <Link to="/login" onClick={() => setMenuOpen(false)} className="flex-1 text-center border border-slate-300 dark:border-slate-600 px-4 py-2 rounded-lg">Login</Link>
-            <Link to="/signup" onClick={() => setMenuOpen(false)} className="flex-1 text-center bg-orange-500 text-white px-4 py-2 rounded-lg">Sign Up</Link>
-          </div>
+          {!user && (
+            <div className="flex gap-3 pt-2">
+              <Link to="/login" onClick={() => setMenuOpen(false)} className="flex-1 text-center border border-slate-300 dark:border-slate-600 px-4 py-2 rounded-lg">Login</Link>
+              <Link to="/signup" onClick={() => setMenuOpen(false)} className="flex-1 text-center bg-orange-500 text-white px-4 py-2 rounded-lg">Sign Up</Link>
+            </div>
+          )}
         </div>
       )}
     </header>

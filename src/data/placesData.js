@@ -1,17 +1,5 @@
-// Central data source for all "place" pages (Kathmandu, Pokhara, Chitwan, Butwal, ...)
-// Add a new object here and a new page automatically appears at /places/<slug>
-//
-// IMAGE SOURCES:
-// - City hero images and a few well-documented dishes (momo, sel roti, choila) use
-//   verified, freely-licensed photos from Wikimedia Commons (CC BY / CC BY-SA), loaded
-//   via the stable Special:FilePath redirect (works directly as an <img src>).
-//   NOTE: these require attribution under their CC license if you publish this site —
-//   check each file's license page on commons.wikimedia.org before shipping.
-// - Every restaurant photo and the remaining regional dishes use loremflickr.com, a
-//   live keyword-based photo API, since the restaurant names read as placeholder/demo
-//   data rather than real, findable businesses. These return a real photo (not a
-//   broken image) but are NOT guaranteed accurate or rights-cleared for commercial use —
-//   swap them for your own photography or licensed stock before production.
+import { BsCupHotFill, BsForkKnife } from "react-icons/bs";
+import { GiChopsticks, GiHotMeal } from "react-icons/gi";
 
 const wikimedia = (filename) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(filename)}`;
@@ -32,7 +20,7 @@ const placesData = [
     description:
       "Kathmandu is the cultural heart of Nepal, where ancient traditions meet modern living. From bustling bazaars to peaceful courtyards, the city offers some of the most diverse food experiences in the country.",
     about:
-      "Kathmandu Valley is home to a unique blend of Newari heritage, street food culture, and trendy cafés. Whether you're exploring heritage sites or relaxing in a courtyard café, the city has something for every food lover.",
+    "Kathmandu Valley is a vibrant destination where Newari heritage, rich street food culture, and modern cafés come together. From exploring centuries-old temples and historic courtyards to enjoying authentic Newari cuisine, momos, and specialty coffee in cozy cafés, the valley offers a unique culinary experience for every food lover.",
     aboutTags: ["Heritage", "Culture", "Street Food", "Cafés", "Shopping"],
     highlights: [
       "Historic Durbar Squares & Temples",
@@ -49,10 +37,123 @@ const placesData = [
       "Stay hydrated and be eco-friendly",
     ],
     foodPlaces: [
-      { name: "Yala Momo", desc: "Best momos in town!", area: "Thamel, Kathmandu", tags: ["Momo", "Tibetan", "Popular"], rating: 4.6, reviews: "1.2k", image: "/src/assets/images/momo.jpg", bg: "from-orange-200 to-orange-400" },
-      { name: "Kantipur Kitchen", desc: "Authentic Newari dining experience", area: "Durbar Marg, Kathmandu", tags: ["Newari", "Traditional", "Dining"], rating: 4.5, reviews: "982", image: placeholder("newari,food"), bg: "from-amber-200 to-amber-400" },
-      { name: "Roadhouse Café", desc: "Cozy vibes & great coffee", area: "Thamel, Kathmandu", tags: ["Café", "Coffee", "Brunch"], rating: 4.4, reviews: "861", image: placeholder("cafe,coffee"), bg: "from-green-200 to-green-400" },
-      { name: "The Momo Hut", desc: "Rooftop view & fusion delights", area: "Lazimpat, Kathmandu", tags: ["Rooftop", "Fusion", "Popular"], rating: 4.3, reviews: "742", image: placeholder("rooftop,restaurant"), bg: "from-purple-200 to-purple-400" },
+      {
+        name: "Yala  Momo",
+        desc: "Best momos in town!",
+        area: "Thamel, Kathmandu",
+        tags: ["Momo", "Tibetan", "Popular"],
+        rating: 4.6,
+        reviews: "1.2k",
+        image: "/src/assets/Momo.jpg",
+        bg: "from-orange-200 to-orange-400",
+        icon: BsForkKnife,
+        phone: "+977-1-4001122",
+        gallery: [
+          "/src/assets/Momo.jpg",
+          placeholder("restaurant,interior,thamel"),
+          placeholder("dumplings,plate"),
+          placeholder("restaurant,seating"),
+        ],
+        about:
+          "Yala Momo is a popular spot in Thamel known for its delicious momos, cozy ambiance and friendly service. A must-visit for momo lovers!",
+        highlights: [
+          "Best momos and dipping sauces",
+          "Cozy and budget-friendly",
+          "Quick service",
+        ],
+        dishes: [
+          { name: "Steam Momo", desc: "Soft and juicy steamed momos served with spicy dipping sauce.", price: "NPR 150", image: "/src/assets/Momo.jpg" },
+          { name: "Fried Momo", desc: "Crispy fried momos packed with flavorful filling.", price: "NPR 180", image: placeholder("fried,momo,dumplings") },
+          { name: "Chilli Momo", desc: "Spicy momos tossed in hot and tangy sauce.", price: "NPR 200", image: placeholder("chilli,momo,spicy") },
+        ],
+      },
+      {
+        name: "Kantipur Kitchen",
+        desc: "Authentic Newari dining experience",
+        area: "Durbar Marg, Kathmandu",
+        tags: ["Newari", "Traditional", "Dining"],
+        rating: 4.5,
+        reviews: "982",
+        image: placeholder("newari,food"),
+        bg: "from-amber-200 to-amber-400",
+        icon: GiHotMeal,
+        phone: "+977-1-4225588",
+        gallery: [
+          placeholder("newari,food"),
+          placeholder("newari,restaurant,interior"),
+          placeholder("nepali,thali,plate"),
+        ],
+        about:
+          "Kantipur Kitchen brings centuries-old Newari recipes to the table in a warm, traditional dining room just off Durbar Marg. A favorite for festive feasts and family gatherings.",
+        highlights: [
+          "Authentic Newari khaja sets",
+          "Traditional seating & decor",
+          "Great for group dining",
+        ],
+        dishes: [
+          { name: "Newari Khaja Set", desc: "Beaten rice, spiced meat, egg and pickles on one plate.", price: "NPR 450", image: placeholder("newari,khaja,set") },
+          { name: "Choila", desc: "Smoky grilled buffalo meat marinated in traditional spices.", price: "NPR 350", image: placeholder("choila,nepali,dish") },
+          { name: "Yomari", desc: "Steamed rice-flour dumpling filled with molasses.", price: "NPR 120", image: placeholder("yomari,nepali,sweet") },
+        ],
+      },
+      {
+        name: "Roadhouse Café",
+        desc: "Cozy vibes & great coffee",
+        area: "Thamel, Kathmandu",
+        tags: ["Café", "Coffee", "Brunch"],
+        rating: 4.4,
+        reviews: "861",
+        image: placeholder("cafe,coffee"),
+        bg: "from-green-200 to-green-400",
+        icon: BsCupHotFill,
+        phone: "+977-1-4433221",
+        gallery: [
+          placeholder("cafe,coffee"),
+          placeholder("cafe,interior,cozy"),
+          placeholder("brunch,plate,cafe"),
+        ],
+        about:
+          "Roadhouse Café is a relaxed hangout spot in the heart of Thamel, known for its wood-fired pizzas, specialty coffee and laid-back brunch menu.",
+        highlights: [
+          "Specialty coffee & espresso bar",
+          "Wood-fired brick oven pizza",
+          "Free Wi-Fi & cozy seating",
+        ],
+        dishes: [
+          { name: "Cappuccino", desc: "Rich espresso topped with steamed milk foam.", price: "NPR 220", image: placeholder("cappuccino,coffee,cup") },
+          { name: "Margherita Pizza", desc: "Classic wood-fired pizza with basil and mozzarella.", price: "NPR 650", image: placeholder("margherita,pizza") },
+          { name: "Avocado Toast", desc: "Sourdough toast topped with smashed avocado.", price: "NPR 380", image: placeholder("avocado,toast,brunch") },
+        ],
+      },
+      {
+        name: "The Momo Hut",
+        desc: "Rooftop view & fusion delights",
+        area: "Lazimpat, Kathmandu",
+        tags: ["Rooftop", "Fusion", "Popular"],
+        rating: 4.3,
+        reviews: "742",
+        image: placeholder("rooftop,restaurant"),
+        bg: "from-purple-200 to-purple-400",
+        icon: GiChopsticks,
+        phone: "+977-1-4556677",
+        gallery: [
+          placeholder("rooftop,restaurant"),
+          placeholder("rooftop,dining,view"),
+          placeholder("fusion,momo,plate"),
+        ],
+        about:
+          "The Momo Hut serves up fusion twists on classic Nepali momo alongside sweeping rooftop views over Lazimpat — a favorite for sunset dinners.",
+        highlights: [
+          "Rooftop seating with city views",
+          "Fusion momo flavors",
+          "Great for evening hangouts",
+        ],
+        dishes: [
+          { name: "Cheese Momo", desc: "Steamed momo stuffed with a molten cheese filling.", price: "NPR 240", image: placeholder("cheese,momo,dumplings") },
+          { name: "Tandoori Momo", desc: "Momo marinated in tandoori spices and lightly charred.", price: "NPR 260", image: placeholder("tandoori,momo") },
+          { name: "Momo Sizzler", desc: "Pan-fried momo served sizzling with fusion sauces.", price: "NPR 320", image: placeholder("momo,sizzler,plate") },
+        ],
+      },
     ],
     localFoods: [
       { name: "Momo", desc: "Steamed dumplings served with spicy momo achar.", image: wikimedia("Momo, Nepal.JPG"), },

@@ -16,7 +16,10 @@ app.post("/api/login", async (req, res) => {
 
   try {
     const [rows] = await pool.query(
-      "SELECT * FROM login WHERE Username = ?",
+      `SELECT l.Username, l.password, c.Full_Name, c.PhoneNumber
+       FROM login l
+       LEFT JOIN createpage c ON c.Email = l.Username
+       WHERE l.Username = ?`,
       [identifier]
     );
 
@@ -34,7 +37,11 @@ app.post("/api/login", async (req, res) => {
 
     return res.status(200).json({
       message: "Login successful",
-      user: { username: user.Username },
+      user: {
+        username: user.Username,
+        name: user.Full_Name,
+        phone: user.PhoneNumber,
+      },
     });
   } catch (err) {
     console.error("Login error:", err);
@@ -77,10 +84,43 @@ app.post("/api/signup", async (req, res) => {
 
     return res.status(201).json({
       message: "Account created successfully",
-      user: { username: email, name },
+      user: { username: email, name, phone },
     });
   } catch (err) {
     console.error("Signup error:", err);
+    return res.status(500).json({ error: "Server error. Please try again." });
+  }
+});
+
+// Update the logged-in user's phone number
+app.put("/api/user/phone", async (req, res) => {
+  const { username, phone } = req.body;
+
+  if (!username || !phone) {
+    return res.status(400).json({ error: "Username and phone are required." });
+  }
+
+  const phonePattern = /^[0-9+\-\s()]{7,15}$/;
+  if (!phonePattern.test(phone)) {
+    return res.status(400).json({ error: "Please enter a valid phone number." });
+  }
+
+  try {
+    const [result] = await pool.query(
+      "UPDATE createpage SET PhoneNumber = ? WHERE Email = ?",
+      [phone, username]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Account not found." });
+    }
+
+    return res.status(200).json({
+      message: "Phone number updated successfully.",
+      phone,
+    });
+  } catch (err) {
+    console.error("Update phone error:", err);
     return res.status(500).json({ error: "Server error. Please try again." });
   }
 });

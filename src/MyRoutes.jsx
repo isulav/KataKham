@@ -8,7 +8,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PageNotFound from "./pages/PageNotFound";
 import PlaceDetail from "./pages/PlaceDetail";
-
+import Settings from "./pages/Settings";
+import Foods from "./pages/Foods";  
+import AllPlaces from "./pages/AllPlaces";
 const MyRoutes = () => {
   return (
     <Routes>
@@ -20,6 +22,9 @@ const MyRoutes = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/places" element={<AllPlaces />} />
+        <Route path="/foods" element={<Foods />} /> 
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

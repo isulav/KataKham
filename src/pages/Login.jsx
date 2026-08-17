@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { MyContext } from "../hooks/MyContext";
 import {
   BsPersonCircle, BsLock, BsEye, BsEyeSlash,
   BsGeoAlt, BsSearch, BsCurrencyDollar, BsStarFill, BsBookmark,
@@ -21,6 +22,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(MyContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ const Login = () => {
         return;
       }
 
-      console.log("Login successful:", data.user);
+      login(data.user);
       navigate("/");
     } catch (err) {
       console.error(err);

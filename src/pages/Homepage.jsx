@@ -154,7 +154,7 @@ const Homepage = () => {
               <h2 className="font-heading text-3xl font-black mb-2">Popular Places</h2>
               <p className="text-slate-500 dark:text-slate-400">Explore food scenes in the most loved places.</p>
             </div>
-            <Link to="/services" className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-orange-500 hover:underline">
+            <Link to="/places" className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-orange-500 hover:underline">
               View all places <BsArrowRight />
             </Link>
           </div>
@@ -224,7 +224,7 @@ const Homepage = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/services"
+                to="/places"
                 className="inline-flex items-center gap-2 bg-white text-orange-500 font-bold px-6 py-3 rounded-xl hover:bg-orange-50 transition"
               >
                 Start Exploring <BsArrowRight />
